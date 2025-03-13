@@ -1,0 +1,18 @@
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: sisimpur-db 
+    restart: always
+    environment:
+      POSTGRES_USER: halum
+      POSTGRES_PASSWORD: machvaja
+      POSTGRES_DB: sisimpur
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql # if you use flyway or liquibase, then you can comment this line
+    ports:
+      - "5433:5432"
+
+volumes:
+  db-data:

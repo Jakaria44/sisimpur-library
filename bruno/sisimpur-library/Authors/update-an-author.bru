@@ -1,0 +1,22 @@
+meta {
+  name: update-a-author
+  type: http
+  seq: 2
+}
+
+put {
+  url: http://localhost:8080/api/v1/authors/:id
+  body: json
+  auth: none
+}
+
+params:path {
+  id: 1
+}
+
+body:json {
+  {
+    "name" : "Rick Riordan",
+    "biography" : "Rick Riordan is the #1 New York Times bestselling author of over twenty novels for young readers, including the Percy Jackson series, and the Kane Chronicles." 
+  }
+}
