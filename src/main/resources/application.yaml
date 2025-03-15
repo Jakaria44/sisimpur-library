@@ -19,3 +19,7 @@ spring:
     database: postgresql
     hibernate:
       ddl-auto: none
+  flyway:
+    baseline-on-migrate: true
+    enabled: true
+    baseline-version: 1
