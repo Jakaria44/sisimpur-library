@@ -1,13 +1,9 @@
 package com.sisimpur.library.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.Set;
 
 @Setter
 @Getter
@@ -15,9 +11,11 @@ import lombok.Setter;
 @Table(name = "books")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Book {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "title", length = 255)
@@ -29,5 +27,13 @@ public class Book {
     @Column(name = "published_year")
     private int publishedYear;
 
-    // Add more fields as needed
+    @Column(name="is_active", nullable = false)
+    private boolean active;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
+    private Author author;
+
+    @ManyToMany(mappedBy = "books")
+    private Set<User> users;
 }
