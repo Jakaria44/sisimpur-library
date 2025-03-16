@@ -1,10 +1,9 @@
 package com.sisimpur.library.repository;
 
-import com.sisimpur.library.model.Book;
+import com.sisimpur.library.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, Long> {
-    
+public interface UserRepository extends JpaRepository<User, Long> {
 }
