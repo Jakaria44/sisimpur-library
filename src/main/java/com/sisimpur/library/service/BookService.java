@@ -1,20 +1,14 @@
 package com.sisimpur.library.service;
 
-import org.springframework.stereotype.Service;
-
+import com.sisimpur.library.dto.BookCreateDto;
+import com.sisimpur.library.dto.BookDto;
 import com.sisimpur.library.model.Book;
-import com.sisimpur.library.repository.BookRepository;
+import org.springframework.data.domain.Page;
 
-import lombok.RequiredArgsConstructor;
+public interface BookService extends GenericService<Book, BookDto, Long> {
+    BookDto createBook(BookCreateDto bookCreateDto);
 
-@Service
-@RequiredArgsConstructor
-public class BookService {
-    
-    private final BookRepository bookRepository;
+    BookDto assignBookToUser(Long bookId, Long userId);
 
-    public Book getBook(Long id) {
-        return bookRepository.findById(id).orElse(null);
-    }
-
+    BookDto unassignBookFromUser(Long bookId, Long userId);
 }
