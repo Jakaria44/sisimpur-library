@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 import java.util.Set;
 
 @Mapper(uses = {BookSummaryMapper.class})
-public interface AuthorMapper {
+public interface AuthorMapper extends BaseMapper<Author, AuthorDto> {
     AuthorMapper INSTANCE = Mappers.getMapper(AuthorMapper.class);
 
 
