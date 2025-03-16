@@ -1,7 +1,6 @@
 package com.sisimpur.library.controller;
 
 import com.sisimpur.library.dto.ApiResponseDto;
-import com.sisimpur.library.dto.ApiResponsePageDto;
 import com.sisimpur.library.service.GenericService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,7 @@ public abstract class AbstractCrudController<D, ID> {
     public ResponseEntity<ApiResponseDto> create(@Valid  @RequestBody D dto) {
         D created = getService().create(dto);
         ApiResponseDto response = new ApiResponseDto();
-        response.setSuccess("true");
+        response.setSuccess(true);
         response.setData(created);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -28,31 +27,37 @@ public abstract class AbstractCrudController<D, ID> {
     public ResponseEntity<ApiResponseDto> getById(@PathVariable ID id) {
         D data = getService().getById(id);
         ApiResponseDto response = new ApiResponseDto();
-        response.setSuccess("true");
+        response.setSuccess(true);
         response.setData(data);
         return ResponseEntity.ok(response);
     }
 
+
+
     @GetMapping
-    public ResponseEntity<ApiResponsePageDto> getAll(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int limit) {
-        Page<D> dataPage = getService().getAll(page, limit);
-        ApiResponsePageDto response = new ApiResponsePageDto();
-        response.setSuccess("true");
-        response.setData(dataPage.getContent());
-        response.setPage(String.valueOf(dataPage.getNumber()));
-        response.setElements(String.valueOf(dataPage.getNumberOfElements()));
-        response.setLimit(String.valueOf(dataPage.getSize()));
-        response.setTotalPages(String.valueOf(dataPage.getTotalPages()));
-        return ResponseEntity.ok(response);
+    public ResponseEntity<Page<D>> getAll(
+            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize,
+            @RequestParam(value = "searchBy", required = false) String searchBy,
+            @RequestParam(value = "searchVal", required = false) String searchVal,
+            @RequestParam(value = "sortBy", defaultValue = "createdAt", required = false) String sortBy,
+            @RequestParam(value = "sortDirection", defaultValue = "DESC", required = false) String sortDirection,
+            @RequestParam(value = "isActive", defaultValue = "true", required = false) String isActive) {
+
+        if (searchBy != null && searchVal == null) {
+            throw new IllegalArgumentException("searchVal must be provided when searchBy is present.");
+        }
+
+        return ResponseEntity.ok(getService().getAll(pageSize, pageNumber, searchBy, searchVal, sortBy, sortDirection, isActive));
+
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponseDto> update(@PathVariable ID id, @RequestBody D dto) {
         D updated = getService().update(id, dto);
         ApiResponseDto response = new ApiResponseDto();
-        response.setSuccess("true");
+        response.setSuccess(true);
         response.setData(updated);
         return ResponseEntity.ok(response);
     }
@@ -61,7 +66,7 @@ public abstract class AbstractCrudController<D, ID> {
     public ResponseEntity<ApiResponseDto> delete(@PathVariable ID id) {
         getService().delete(id);
         ApiResponseDto response = new ApiResponseDto();
-        response.setSuccess("true");
+        response.setSuccess(true);
         response.setData("Deleted successfully");
         return ResponseEntity.ok(response);
     }

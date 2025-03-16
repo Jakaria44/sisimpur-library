@@ -10,7 +10,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class ApiResponseDto {
 
-    private String success;
+    private boolean success;
     private String error;
     private Object data;
 }

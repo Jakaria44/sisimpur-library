@@ -7,6 +7,8 @@ import com.sisimpur.library.repository.SearchableRepository;
 import com.sisimpur.library.service.GenericService;
 import com.sisimpur.library.model.Activatable;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,7 +40,7 @@ public abstract class AbstractCrudService<E extends Activatable, D, ID> implemen
             throw new ServiceException("An unexpected error occurred during creation.", ex);
         }
     }
-
+    @Cacheable(value = "entityCache", key = "#id")
     @Override
     public D getById(ID id) {
         try {
@@ -56,17 +58,7 @@ public abstract class AbstractCrudService<E extends Activatable, D, ID> implemen
         }
     }
 
-    @Override
-    public Page<D> getAll(int page, int limit) {
-        try {
-            Page<E> entities = getRepository().findAll(PageRequest.of(page, limit));
-            return entities.map(getMapper()::toDto);
-        } catch (Exception ex) {
-            log.error("Error retrieving entities: {}", ex.getMessage(), ex);
-            throw new ServiceException("An unexpected error occurred while retrieving entities.", ex);
-        }
-    }
-
+    @CacheEvict(value = "entityCache", key = "#id")
     @Override
     public D update(ID id, D dto) {
         try {
@@ -89,9 +81,8 @@ public abstract class AbstractCrudService<E extends Activatable, D, ID> implemen
         }
     }
 
-    /**
-     * Soft delete operation: instead of deleting from the database, mark the entity as inactive.
-     */
+
+    @CacheEvict(value = "entityCache", key = "#id")
     @Override
     public void delete(ID id) {
         try {
@@ -112,10 +103,9 @@ public abstract class AbstractCrudService<E extends Activatable, D, ID> implemen
         }
     }
 
-    /**
-     * Advanced search method that supports filtering by search fields, active status, and sorting.
-     */
-    public Page<D> getAllAdvanced(Integer pageSize, Integer pageNumber, String searchBy, String searchVal,
+
+    @Override
+    public Page<D> getAll(Integer pageSize, Integer pageNumber, String searchBy, String searchVal,
                                   String sortBy, String sortDirection, String isActive) {
         try {
             Sort.Direction direction = "DESC".equalsIgnoreCase(sortDirection) ? Sort.Direction.DESC : Sort.Direction.ASC;

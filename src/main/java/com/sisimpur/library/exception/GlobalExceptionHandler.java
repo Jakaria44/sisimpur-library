@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponseDto> handleResourceNotFound(ResourceNotFoundException ex) {
         ApiResponseDto response = new ApiResponseDto();
-        response.setSuccess("false");
+        response.setSuccess(false);
         response.setError(ex.getMessage());
         log.error("ResourceNotFoundException: {}", ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({DataIntegrityViolationException.class, ConstraintViolationException.class})
     public ResponseEntity<ApiResponseDto> handleDataIntegrityViolation(Exception ex) {
         ApiResponseDto response = new ApiResponseDto();
-        response.setSuccess("false");
+        response.setSuccess(false);
         response.setError("Data integrity violation: " + ex.getMessage());
         log.error("Data integrity violation: {}", ex.getMessage(), ex);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ServiceException.class)
     public ResponseEntity<ApiResponseDto> handleServiceException(ServiceException ex) {
         ApiResponseDto response = new ApiResponseDto();
-        response.setSuccess("false");
+        response.setSuccess(false);
         response.setError(ex.getMessage());
         log.error("ServiceException: {}", ex.getMessage(), ex);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponseDto> handleGeneralException(Exception ex) {
         ApiResponseDto response = new ApiResponseDto();
-        response.setSuccess("false");
+        response.setSuccess(false);
         response.setError("An unexpected error occurred: " + ex.getMessage());
         log.error("Unhandled Exception: {}", ex.getMessage(), ex);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
