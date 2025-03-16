@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = {AuthorSummaryMapper.class})
+@Mapper(componentModel = "spring",uses = {AuthorSummaryMapper.class})
 public interface BookMapper extends BaseMapper<Book, BookDto> {
     BookMapper INSTANCE = Mappers.getMapper(BookMapper.class);
 
