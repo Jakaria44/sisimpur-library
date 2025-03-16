@@ -1,24 +1,51 @@
 package com.sisimpur.library.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.sisimpur.library.model.Book;
+import com.sisimpur.library.dto.ApiResponseDto;
+import com.sisimpur.library.dto.BookCreateDto;
+import com.sisimpur.library.dto.BookDto;
 import com.sisimpur.library.service.BookService;
-
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/books")
+@RequestMapping("/books")
 @RequiredArgsConstructor
-public class BookController {
-    
+public class BookController extends AbstractCrudController<BookDto, Long> {
+
     private final BookService bookService;
 
-    @GetMapping("/{id}")
-    public Book getBook(@PathVariable Long id) {
-        return bookService.getBook(id);
+    @Override
+    protected BookService getService() {
+        return bookService;
+    }
+
+    @PostMapping
+    public ResponseEntity<ApiResponseDto> create(@Valid @RequestBody BookCreateDto bookCreateDto) {
+        BookDto created = bookService.createBook(bookCreateDto);
+        ApiResponseDto response = new ApiResponseDto();
+        response.setSuccess(true);
+        response.setData(created);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{bookId}/assign/{userId}")
+    public ResponseEntity<ApiResponseDto> assignBookToUser(@PathVariable Long bookId, @PathVariable Long userId) {
+        BookDto bookDto = bookService.assignBookToUser(bookId, userId);
+        ApiResponseDto response = new ApiResponseDto();
+        response.setSuccess(true);
+        response.setData(bookDto);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{bookId}/unassign/{userId}")
+    public ResponseEntity<ApiResponseDto> unassignBookFromUser(@PathVariable Long bookId, @PathVariable Long userId) {
+        BookDto bookDto = bookService.unassignBookFromUser(bookId, userId);
+        ApiResponseDto response = new ApiResponseDto();
+        response.setSuccess(true);
+        response.setData(bookDto);
+        return ResponseEntity.ok(response);
     }
 }

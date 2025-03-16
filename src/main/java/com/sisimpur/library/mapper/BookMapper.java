@@ -15,4 +15,7 @@ public interface BookMapper extends BaseMapper<Book, BookDto> {
     @Mapping(target="users", ignore=true)
     Book toEntity(BookDto bookDto);
 
+    @Mapping(target="id", ignore=true)
+    @Mapping(target="users", ignore=true)
+    Book bookCreateDtoToBook(BookDto bookDto);
 }
