@@ -1,5 +1,6 @@
 package com.sisimpur.library.mapper;
 
+import com.sisimpur.library.dto.UserCreateDto;
 import com.sisimpur.library.dto.UserDto;
 import com.sisimpur.library.model.User;
 import org.mapstruct.Mapper;
@@ -8,4 +9,7 @@ import org.mapstruct.Mapper;
 public interface UserMapper extends BaseMapper<User, UserDto> {
     UserDto toDto(User user);
     User toEntity(UserDto userDto);
+
+
+    User userCreateDtoToUser(UserCreateDto userCreateDto);
 }
