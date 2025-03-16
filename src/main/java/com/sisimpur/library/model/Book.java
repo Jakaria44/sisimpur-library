@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Book {
+public class Book  implements Activatable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

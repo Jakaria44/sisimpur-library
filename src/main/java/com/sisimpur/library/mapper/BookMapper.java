@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = {AuthorSummaryMapper.class})
-public interface BookMapper {
+public interface BookMapper extends BaseMapper<Book, BookDto> {
     BookMapper INSTANCE = Mappers.getMapper(BookMapper.class);
 
     BookDto toDto(Book book);

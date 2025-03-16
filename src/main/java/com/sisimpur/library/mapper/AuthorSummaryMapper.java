@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
-public interface AuthorSummaryMapper {
+public interface AuthorSummaryMapper extends BaseMapper<Author, AuthorSummaryDto> {
 
     AuthorSummaryMapper INSTANCE = Mappers.getMapper(AuthorSummaryMapper.class);
 
