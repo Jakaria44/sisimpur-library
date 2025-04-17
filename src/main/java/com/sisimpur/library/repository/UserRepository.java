@@ -12,8 +12,8 @@ public interface UserRepository extends SearchableRepository<User, Long> {
     @Override
     @Query(value = "SELECT u FROM User u WHERE " +
             "((:searchBy = 'name' AND LOWER(u.name) LIKE LOWER(CONCAT('%', :searchVal, '%'))) OR " +
-            "(:searchBy = 'id' AND LOWER(u.id) LIKE LOWER(CONCAT('%', :searchVal, '%'))) OR " +
-            "(:searchBy = 'email' AND STR(u.email) = :searchVal)) " +
+            "(:searchBy = 'email' AND LOWER(u.email) LIKE LOWER(CONCAT('%', :searchVal, '%'))) OR " +
+            "(:searchBy = 'id' AND u.id = :searchVal)) " +
             "AND (:isActive IS NULL OR u.active = :isActive)")
     Page<User> findAllBySearchValAndSearchByAndActive(
             @Param("searchVal") String searchVal,

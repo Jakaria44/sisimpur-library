@@ -13,25 +13,17 @@ import com.sisimpur.library.repository.BookRepository;
 import com.sisimpur.library.repository.SearchableRepository;
 import com.sisimpur.library.repository.UserRepository;
 import com.sisimpur.library.service.BookService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class BookServiceImpl extends AbstractCrudService<Book, BookDto, Long> implements BookService {
 
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final UserRepository userRepository;
     private final BookMapper bookMapper;
-
-    public BookServiceImpl(BookRepository bookRepository,
-                           AuthorRepository authorRepository,
-                           UserRepository userRepository,
-                           BookMapper bookMapper) {
-        this.bookRepository = bookRepository;
-        this.authorRepository = authorRepository;
-        this.userRepository = userRepository;
-        this.bookMapper = bookMapper;
-    }
 
     @Override
     protected SearchableRepository<Book, Long> getRepository() {

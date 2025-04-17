@@ -5,17 +5,14 @@ import com.sisimpur.library.dto.AuthorDto;
 import com.sisimpur.library.dto.BookSummaryDto;
 import com.sisimpur.library.model.Author;
 import com.sisimpur.library.model.Book;
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 import java.util.Set;
 
-@Mapper(componentModel = "spring",uses = {BookSummaryMapper.class})
+@Mapper(componentModel = "spring", uses = {BookSummaryMapper.class}, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface AuthorMapper extends BaseMapper<Author, AuthorDto> {
-    AuthorMapper INSTANCE = Mappers.getMapper(AuthorMapper.class);
-
-
     AuthorDto toDto(Author author);
 
     Author toEntity(AuthorDto authorDto);

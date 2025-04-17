@@ -17,8 +17,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AuthorMapperTest {
 
-    private final AuthorMapper authorMapper = new AuthorMapperImpl();
     private final BookSummaryMapper bookSummaryMapper = new BookSummaryMapperImpl();
+    private final AuthorMapper authorMapper = new AuthorMapperImpl(bookSummaryMapper);
 
     @Test
     void shouldMapAuthorToAuthorDto() {

@@ -14,8 +14,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 public class BookMapperTest {
 
-    private final BookMapper bookMapper = new BookMapperImpl();
     private final AuthorSummaryMapper authorSummaryMapper = new AuthorSummaryMapperImpl();
+    private final BookMapper bookMapper = new BookMapperImpl(authorSummaryMapper);
 
     @Test
     void shouldMapBookToBookDto() {
